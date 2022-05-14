@@ -1,0 +1,4 @@
+---
+- src: https://github.com/hatamiarash7/Ansible-Install-Docker.git
+  version: master
+  name: install_docker
