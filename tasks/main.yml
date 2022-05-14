@@ -9,6 +9,7 @@
   vars:
     packages:
       - kmod
+      - curl
 
 - name: Load br_netfilter kernel module on boot
   become: true
