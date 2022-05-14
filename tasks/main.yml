@@ -55,9 +55,17 @@
   register: result
   until: result is succeeded
 
+- name: Check cgroup driver
+  become: true
+  shell: grep -c "cgroup-driver=systemd" /etc/default/kubelet || true
+  register: test_cgroup
+
 - name: Configure cgroup driver
   become: true
-  ansible.builtin.shell: echo "KUBELET_EXTRA_ARGS=--cgroup-driver=systemd" > /etc/default/kubelet
+  lineinfile:
+    dest: /etc/default/kubelet
+    line: KUBELET_EXTRA_ARGS=--cgroup-driver=systemd
+  when: test_cgroup.stdout == "0"
 
 - name: Install k8s packages
   become: true
