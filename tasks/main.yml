@@ -9,7 +9,6 @@
   vars:
     packages:
       - kmod
-      - curl
 
 - name: Load br_netfilter kernel module on boot
   become: true
@@ -35,19 +34,26 @@
   ansible.builtin.command: "sysctl --system"
   when: sysctl_configured.changed
 
-- name: Add k8s gpg key
+- name: Add K8s GPG apt key
   become: true
-  ansible.builtin.shell:
-    cmd: curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | gpg --dearmor > /usr/share/keyrings/kubernetes-archive-keyring.gpg
-    creates: /usr/share/keyrings/kubernetes-archive-keyring.gpg
-    warn: false
+  ansible.builtin.apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+  retries: 3
+  delay: 30
+  register: result
+  until: result is succeeded
 
-- name: Add K8s repository
+- name: Add K8s Repository
   become: true
   ansible.builtin.apt_repository:
-    repo: "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main"
+    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
     state: present
-    update_cache: false
+    update_cache: true
+  retries: 3
+  delay: 30
+  register: result
+  until: result is succeeded
 
 - name: Configure cgroup driver
   become: true
