@@ -59,6 +59,7 @@
   become: true
   ansible.builtin.shell: grep -c "cgroup-driver=systemd" /etc/default/kubelet || true
   register: test_cgroup
+  changed_when: test_cgroup.stdout == "0"
 
 - name: Configure cgroup driver
   become: true
