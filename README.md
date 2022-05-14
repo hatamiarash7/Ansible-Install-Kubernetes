@@ -30,7 +30,7 @@ Then, Include role in Playbook:
 
 ## Dependency
 
-You should install **Docker** first. Use [install_docker](https://github.com/hatamiarash7/Ansible-Install-Docker) role.
+You need **Docker**. The [install_docker](https://github.com/hatamiarash7/Ansible-Install-Docker) role is a dependency.
 
 ---
 
