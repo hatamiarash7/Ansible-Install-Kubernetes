@@ -16,4 +16,4 @@ galaxy_info:
     - k8s
     - kubernetes
 dependencies:
-  - role: install_docker
+  - role: hatamiarash7.install_docker
